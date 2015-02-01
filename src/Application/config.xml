@@ -1,0 +1,37 @@
+<?xml version="1.0" ?>
+<!DOCTYPE plugin-properties SYSTEM "/usr/etc/tizen-apis/config.dtd">
+<plugin-properties>
+	<library-name>libwrt-plugins-tizen-application.so</library-name>
+	<feature-install-uri>application.install.uri</feature-install-uri>
+
+    <api-feature>
+        <name>http://tizen.org/privilege/application.launch</name>
+        <device-capability>application.launch</device-capability>
+    </api-feature>
+
+    <api-feature>
+        <name>http://tizen.org/privilege/application.kill</name>
+        <device-capability>appmanager.kill</device-capability>
+    </api-feature>
+
+    <api-feature>
+        <name>http://tizen.org/privilege/appmanager.kill</name>
+        <device-capability>appmanager.kill</device-capability>
+    </api-feature>
+
+    <api-feature>
+        <name>http://tizen.org/privilege/appmanager.certificate</name>
+        <device-capability>appmanager.certificate</device-capability>
+    </api-feature>
+
+    <api-feature>
+        <name>http://tizen.org/privilege/application.read</name>
+        <device-capability>appmanager.certificate</device-capability>
+    </api-feature>
+
+    <api-feature>
+        <name>http://tizen.org/privilege/application.info</name>
+        <device-capability>application.info</device-capability>
+    </api-feature>
+
+</plugin-properties>

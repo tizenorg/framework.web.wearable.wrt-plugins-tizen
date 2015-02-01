@@ -1,0 +1,11 @@
+<?xml version="1.0" ?>
+<!DOCTYPE plugin-properties SYSTEM "/usr/etc/tizen-apis/config.dtd">
+<plugin-properties>
+    <library-name>libwrt-plugins-tizen-badge.so</library-name>
+    <feature-install-uri>badge.install.uri</feature-install-uri>
+    <api-feature>
+        <name>http://tizen.org/privilege/notification</name>
+    <device-capability>notification</device-capability>
+    </api-feature>
+</plugin-properties>
+

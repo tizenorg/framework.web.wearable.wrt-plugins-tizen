@@ -1,0 +1,22 @@
+<?xml version="1.0" ?>
+<!DOCTYPE plugin-properties SYSTEM "/usr/etc/tizen-apis/config.dtd">
+<plugin-properties>
+    <library-name>libwrt-plugins-tizen-tizen.so</library-name>
+    <feature-install-uri>tizen.install.uri</feature-install-uri>
+
+    <api-feature>
+        <name>http://tizen.org/privilege/tizen</name>
+        <!--
+            <Object name="tizen">
+                <Function name="listAvailableFeatures"/>
+                <Function name="listActivatedFeatures"/>
+                <Function name="createCompositeFilter"/>
+                <Function name="createAttributeFilter"/>
+                <Function name="createAttributeRangeFilter"/>
+                <Function name="createIDFilter"/>
+                <Function name="createSortMode"/>
+            </Object>
+        -->
+    </api-feature>
+</plugin-properties>
+

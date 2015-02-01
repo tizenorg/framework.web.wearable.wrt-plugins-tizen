@@ -1,0 +1,10 @@
+<?xml version="1.0" ?>
+<!DOCTYPE plugin-properties SYSTEM "/usr/etc/tizen-apis/config.dtd">
+<plugin-properties>
+    <library-name>libwrt-plugins-tizen-sensor.so</library-name>
+    <feature-install-uri>sensor.install.uri</feature-install-uri>
+
+    <api-feature>
+        <name>http://tizen.org/privilege/sensor</name>
+    </api-feature>
+</plugin-properties>

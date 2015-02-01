@@ -1,0 +1,12 @@
+me=@CMAKE_PROJECT_NAME@
+module_name=MediaKey
+exec_prefix=${prefix}
+libdir=${prefix}/lib/wrt-plugins/tizen-${module_name}
+includedir=${prefix}/include/${project_name}
+
+Name: wrt-plugins-tizen-${module_name}
+Description: wrt-plugins-tizen-${module_name}
+Version: @CMAKE_PROJECT_VERSION@
+Requires: capi-system-media-key
+Libs: -L${libdir} -lwrt-plugins-tizen-${module_name}
+Cflags: -I${includedir}/${module_name}
