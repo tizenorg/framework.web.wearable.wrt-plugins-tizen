@@ -1,0 +1,11 @@
+<?xml version="1.0" ?>
+<!DOCTYPE plugin-properties SYSTEM "/usr/etc/tizen-apis/config.dtd">
+<plugin-properties>
+    <library-name>libwrt-plugins-tizen-sound.so</library-name>
+    <feature-install-uri>sound.install.uri</feature-install-uri>
+
+    <api-feature>
+        <name>http://tizen.org/privilege/volume.set</name>
+        <device-capability>volume.set</device-capability>
+    </api-feature>
+</plugin-properties>

@@ -1,0 +1,12 @@
+<?xml version="1.0" ?>
+<!DOCTYPE plugin-properties SYSTEM "/usr/etc/tizen-apis/config.dtd">
+<plugin-properties>
+    <library-name>libwrt-plugins-tizen-systemsetting.so</library-name>
+    <feature-install-uri>systemsetting.install.uri</feature-install-uri>
+
+    <api-feature>
+        <name>http://tizen.org/privilege/setting</name>
+        <device-capability>setting</device-capability>
+    </api-feature>
+</plugin-properties>
+

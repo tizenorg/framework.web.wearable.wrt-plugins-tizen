@@ -1,0 +1,52 @@
+
+SET(TARGET_NAME ${mediakey_target})
+SET(DESTINATION_NAME ${mediakey_dest})
+SET(TARGET_IMPL_NAME ${mediakey_impl})
+
+PKG_CHECK_MODULES(mediakey REQUIRED capi-system-media-key)
+
+INCLUDE_DIRECTORIES(
+        ${TOP}/Common
+        ${mediakey_INCLUDE_DIRS}
+)
+
+SET(CMAKE_INSTALL_RPATH
+        ${CMAKE_INSTALL_RPATH}
+        ${CMAKE_INSTALL_PREFIX}/${DESTINATION_LIB_PREFIX}/${tizen_dest}
+        ${CMAKE_INSTALL_PREFIX}/${DESTINATION_LIB_PREFIX}/${timeutil_dest}
+        ${CMAKE_INSTALL_PREFIX}/${DESTINATION_LIB_PREFIX}/${DESTINATION_NAME}
+)
+
+SET(SRCS_IMPL
+    JSMediaKeyManager.cpp
+    MediaKeyManager.cpp
+    MediaKeyEventCallback.cpp
+    MediaKeyUtil.cpp
+)
+
+ADD_LIBRARY(${TARGET_IMPL_NAME} SHARED ${SRCS_IMPL})
+
+TARGET_LINK_LIBRARIES(${TARGET_IMPL_NAME}
+        ${LIBS_COMMON}
+        ${tizen_impl}
+        ${timeutil_impl}
+        ${mediakey_LIBRARIES}
+)
+
+SET(SRCS
+    plugin_config.cpp
+    plugin_initializer.cpp
+)
+
+ADD_LIBRARY(${TARGET_NAME} SHARED ${SRCS})
+
+TARGET_LINK_LIBRARIES(${TARGET_NAME}
+        ${TARGET_IMPL_NAME}
+)
+
+INSTALL(TARGETS ${TARGET_NAME} ${TARGET_IMPL_NAME} LIBRARY DESTINATION ${DESTINATION_LIB_PREFIX}/${DESTINATION_NAME})
+INSTALL(FILES ${CMAKE_CURRENT_SOURCE_DIR}/config.xml DESTINATION ${DESTINATION_LIB_PREFIX}/${DESTINATION_NAME})
+INSTALL(
+        DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/ DESTINATION ${DESTINATION_HEADER_PREFIX}/mediakey
+        FILES_MATCHING PATTERN "*.h" PATTERN "CMakeFiles" EXCLUDE
+)

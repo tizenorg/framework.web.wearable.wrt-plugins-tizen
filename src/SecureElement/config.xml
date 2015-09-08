@@ -1,0 +1,17 @@
+<?xml version="1.0" ?>
+<!DOCTYPE plugin-properties SYSTEM "/usr/etc/tizen-apis/config.dtd">
+<plugin-properties>
+    <library-name>libwrt-plugins-tizen-secureelement.so</library-name>
+    <feature-install-uri>secureelement.install.uri</feature-install-uri>
+
+    <api-feature>
+        <name>http://tizen.org/privilege/secureelement</name>
+        <device-capability>secureelement</device-capability>
+    </api-feature>
+
+    <api-feature>
+        <name>http://tizen.org/privilege/se</name>
+        <device-capability>se</device-capability>
+    </api-feature>
+</plugin-properties>
+

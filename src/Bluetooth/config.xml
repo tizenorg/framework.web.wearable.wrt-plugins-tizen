@@ -1,0 +1,31 @@
+<?xml version="1.0" ?>
+<!DOCTYPE plugin-properties SYSTEM "/usr/etc/tizen-apis/config.dtd">
+<plugin-properties>
+    <library-name>libwrt-plugins-tizen-bluetooth.so</library-name>
+    <feature-install-uri>bluetooth.install.uri</feature-install-uri>
+    <api-feature>
+        <name>http://tizen.org/privilege/bluetooth.gap</name>
+        <device-capability>bluetooth.gap</device-capability>
+    </api-feature>
+
+    <api-feature>
+        <name>http://tizen.org/privilege/bluetooth.admin</name>
+        <device-capability>bluetooth.admin</device-capability>
+    </api-feature>
+
+    <api-feature>
+        <name>http://tizen.org/privilege/bluetoothmanager</name>
+        <device-capability>bluetoothmanager</device-capability>
+    </api-feature>
+
+    <api-feature>
+        <name>http://tizen.org/privilege/bluetooth.spp</name>
+        <device-capability>bluetooth.spp</device-capability>
+    </api-feature>
+
+    <api-feature>
+        <name>http://tizen.org/privilege/bluetooth.health</name>
+        <device-capability>bluetooth.health</device-capability>
+    </api-feature>
+
+</plugin-properties>

@@ -1,0 +1,13 @@
+prefix=/usr
+project_name=@CMAKE_PROJECT_NAME@
+module_name=archive
+exec_prefix=${prefix}
+libdir=${prefix}/lib/wrt-plugins/tizen-${module_name}
+includedir=${prefix}/include/${project_name}
+
+Name: wrt-plugins-tizen-${module_name}
+Description: wrt-plugins-tizen-${module_name}
+Version: @CMAKE_PROJECT_VERSION@
+Requires:
+Libs: -L${libdir} -lwrt-plugins-tizen-${module_name}-impl -lwrt-plugins-tizen-${module_name}-config
+Cflags: -I${includedir}/${module_name}

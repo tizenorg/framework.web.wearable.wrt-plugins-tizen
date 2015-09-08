@@ -1,0 +1,387 @@
+CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
+PROJECT(wrt-plugins-tizen)
+
+# -----------------------------------------------------------------------------
+# Required platform modules
+# -----------------------------------------------------------------------------
+INCLUDE(FindPkgConfig)
+
+PKG_CHECK_MODULES(webkit2 REQUIRED ewebkit2)
+PKG_CHECK_MODULES(dpl REQUIRED dpl-efl)
+PKG_CHECK_MODULES(dpl-event REQUIRED dpl-event-efl)
+PKG_CHECK_MODULES(wrt-plugins-types REQUIRED wrt-plugins-types)
+PKG_CHECK_MODULES(wrt-deviceapis-commons REQUIRED wrt-plugins-commons)
+PKG_CHECK_MODULES(wrt-deviceapis-commons-javascript REQUIRED wrt-plugins-commons-javascript)
+PKG_CHECK_MODULES(wrt-plugins-widgetdb REQUIRED wrt-plugins-widgetdb)
+PKG_CHECK_MODULES(glib-2.0 REQUIRED glib-2.0)
+
+
+INCLUDE_DIRECTORIES(
+  ${webkit2_INCLUDE_DIRS}
+  ${dpl_INCLUDE_DIRS}
+  ${wrt-plugins-types_INCLUDE_DIRS}
+  ${wrt-deviceapis-commons_INCLUDE_DIRS}
+  ${wrt-deviceapis-commons-javascript_INCLUDE_DIRS}
+)
+
+# -----------------------------------------------------------------------------
+# Determine the log option
+# -----------------------------------------------------------------------------
+
+OPTION(DPL_LOG "DPL logs status" OFF)
+
+IF(DPL_LOG)
+    MESSAGE(STATUS "Logging enabled for DPL")
+    ADD_DEFINITIONS("-DDPL_LOGS_ENABLED")
+ELSE(DPL_LOG)
+    MESSAGE(STATUS "Logging disabled for DPL")
+ENDIF(DPL_LOG)
+
+# -----------------------------------------------------------------------------
+# Determine the time tracing option
+# -----------------------------------------------------------------------------
+
+OPTION(ENABLE_TIME_TRACER "TIME TRACING" OFF)
+
+IF(ENABLE_TIME_TRACER)
+    MESSAGE(STATUS "Time tracer enabled")
+    ADD_DEFINITIONS("-DENABLE_TIME_TRACER")
+ELSE(ENABLE_TIME_TRACER)
+    MESSAGE(STATUS "Time tracer disabled")
+ENDIF(ENABLE_TIME_TRACER)
+
+# -----------------------------------------------------------------------------
+# Set build type (Release by default)
+# -----------------------------------------------------------------------------
+IF("${CMAKE_BUILD_TYPE}" STREQUAL "")
+     SET(CMAKE_BUILD_TYPE Release)
+ENDIF("${CMAKE_BUILD_TYPE}" STREQUAL "")
+
+MESSAGE("Build type: ${CMAKE_BUILD_TYPE}")
+
+IF(ENABLE_TIZEN_MOBILE_PROFILE)
+    MESSAGE(STATUS "For Tizen Mobile Profile")
+    ADD_DEFINITIONS( -DPROFILE_MOBILE )
+ENDIF(ENABLE_TIZEN_MOBILE_PROFILE)
+
+IF(ENABLE_TIZEN_WEARABLE_PROFILE)
+    MESSAGE(STATUS "For Tizen Wearable Profile")
+    ADD_DEFINITIONS( -DPROFILE_WEARABLE )
+ENDIF(ENABLE_TIZEN_WEARABLE_PROFILE)
+
+IF(ENABLE_TIZEN_TV_PROFILE)
+    MESSAGE(STATUS "For Tizen TV Profile")
+    ADD_DEFINITIONS( -DPROFILE_TV )
+ENDIF(ENABLE_TIZEN_TV_PROFILE)
+
+IF(ENABLE_OPTIONAL_CORE_API)
+    MESSAGE(STATUS "Tizen Core API Enabled")
+    ADD_DEFINITIONS( -DFEATURE_OPTIONAL_CORE_API )
+ENDIF(ENABLE_OPTIONAL_CORE_API)
+
+IF(ENABLE_TIZEN_APP_CONTROL_SETTING_SUPPORT)
+    MESSAGE(STATUS "Tizen AppControl Setting Support Enabled")
+    ADD_DEFINITIONS( -DAPP_CONTROL_SETTING_SUPPORT ) 
+ENDIF(ENABLE_TIZEN_APP_CONTROL_SETTING_SUPPORT)
+
+# -----------------------------------------------------------------------------
+# Determine the feature configuration for optional API
+# -----------------------------------------------------------------------------
+
+IF(ENABLE_OPTIONAL_ACCOUNT)
+    MESSAGE(STATUS " Account API Enabled")
+    ADD_DEFINITIONS( -DFEATURE_OPTIONAL_ACCOUNT )
+ENDIF(ENABLE_OPTIONAL_ACCOUNT)
+
+IF(ENABLE_OPTIONAL_ARCHIVE)
+    MESSAGE(STATUS " Archive API Enabled")
+    ADD_DEFINITIONS( -DFEATURE_OPTIONAL_ARCHIVE )
+ENDIF(ENABLE_OPTIONAL_ARCHIVE)
+
+IF(ENABLE_OPTIONAL_BADGE)
+    MESSAGE(STATUS " Badge API Enabled")
+    ADD_DEFINITIONS( -DFEATURE_OPTIONAL_BADGE )
+ENDIF(ENABLE_OPTIONAL_BADGE)
+
+IF(ENABLE_OPTIONAL_MEDIAKEY)
+    MESSAGE(STATUS " MediaKey API Enabled")
+    ADD_DEFINITIONS( -DFEATURE_OPTIONAL_MEIDAKEY )
+ENDIF(ENABLE_OPTIONAL_MEDIAKEY)
+
+IF(ENABLE_OPTIONAL_BT)
+    MESSAGE(STATUS "Bluetooth API Enabled")
+    ADD_DEFINITIONS( -DFEATURE_OPTIONAL_BT )
+ENDIF(ENABLE_OPTIONAL_BT)
+
+IF(ENABLE_OPTIONAL_BT_HEALTH)
+    MESSAGE(STATUS " BT Health API Enabled")
+    ADD_DEFINITIONS( -DFEATURE_OPTIONAL_BT_HEALTH )
+ENDIF(ENABLE_OPTIONAL_BT_HEALTH)
+
+IF(ENABLE_OPTIONAL_BT_ALWAYS_ON)
+    MESSAGE(STATUS "Bluetooth Always ON")
+    ADD_DEFINITIONS( -DFEATURE_OPTIONAL_BT_ALWAYS_ON )
+ENDIF(ENABLE_OPTIONAL_BT_ALWAYS_ON)
+
+IF(ENABLE_OPTIONAL_LOCATION_BATCH)
+    MESSAGE(STATUS " location batch Enabled")
+    ADD_DEFINITIONS( -DFEATURE_OPTIONAL_LOCATION_BATCH )
+ENDIF(ENABLE_OPTIONAL_LOCATION_BATCH)
+
+IF(ENABLE_OPTIONAL_BOOKMARK)
+    MESSAGE(STATUS " API Enabled")
+    ADD_DEFINITIONS( -DFEATURE_OPTIONAL_BOOKMARK )
+ENDIF(ENABLE_OPTIONAL_BOOKMARK)
+
+IF(ENABLE_OPTIONAL_CALENDAR)
+    MESSAGE(STATUS " Calendar API Enabled")
+    ADD_DEFINITIONS( -DFEATURE_OPTIONAL_CALENDAR )
+ENDIF(ENABLE_OPTIONAL_CALENDAR)
+
+IF(ENABLE_OPTIONAL_CALL_HISTORY)
+    MESSAGE(STATUS "Callhistory API Enabled")
+    ADD_DEFINITIONS( -DFEATURE_OPTIONAL_CALL_HISTORY )
+ENDIF(ENABLE_OPTIONAL_CALL_HISTORY)
+
+IF(ENABLE_OPTIONAL_CONTACT)
+    MESSAGE(STATUS " Contact API Enabled")
+    ADD_DEFINITIONS( -DFEATURE_OPTIONAL_CONTACT )
+ENDIF(ENABLE_OPTIONAL_CONTACT)
+
+IF(ENABLE_OPTIONAL_CONTENT)
+    MESSAGE(STATUS " Content API Enabled")
+    ADD_DEFINITIONS( -DFEATURE_OPTIONAL_CONTENT )
+ENDIF(ENABLE_OPTIONAL_CONTENT)
+
+IF(ENABLE_OPTIONAL_DATA_CONTROL)
+    MESSAGE(STATUS " DataControl API Enabled")
+    ADD_DEFINITIONS( -DFEATURE_OPTIONAL_DATACONTROL )
+ENDIF(ENABLE_OPTIONAL_DATA_CONTROL)
+
+IF(ENABLE_OPTIONAL_DATA_SYNC)
+    MESSAGE(STATUS " Datasync API Enabled")
+    ADD_DEFINITIONS( -DFEATURE_OPTIONAL_DATASYNC )
+ENDIF(ENABLE_OPTIONAL_DATA_SYNC)
+
+IF(ENABLE_OPTIONAL_DOWNLOAD)
+    MESSAGE(STATUS " Download API Enabled")
+    ADD_DEFINITIONS( -DFEATURE_OPTIONAL_DOWNLOAD )
+ENDIF(ENABLE_OPTIONAL_DOWNLOAD)
+
+IF(ENABLE_OPTIONAL_EXIF)
+    MESSAGE(STATUS " Exif API Enabled")
+    ADD_DEFINITIONS( -DFEATURE_OPTIONAL_EXIF )
+ENDIF(ENABLE_OPTIONAL_EXIF)
+
+IF(ENABLE_OPTIONAL_FM_RADIO)
+    MESSAGE(STATUS " FM Radio API Enabled")
+    ADD_DEFINITIONS( -DFEATURE_OPTIONAL_FM_RADIO )
+ENDIF(ENABLE_OPTIONAL_FM_RADIO)
+
+IF(ENABLE_OPTIONAL_HAM)
+    MESSAGE(STATUS " HumanActivityMonitor API Enabled")
+    ADD_DEFINITIONS( -DFEATURE_OPTIONAL_HAM )
+ENDIF(ENABLE_OPTIONAL_HAM)
+
+IF(ENABLE_OPTIONAL_MESSAGING)
+    MESSAGE(STATUS " Messaging API Enabled")
+    ADD_DEFINITIONS( -DFEATURE_OPTIONAL_MESSAGING )
+ENDIF(ENABLE_OPTIONAL_MESSAGING)
+
+IF(ENABLE_OPTIONAL_MESSAGING_EMAIL)
+    MESSAGE(STATUS " Messaging email API Enabled")
+    ADD_DEFINITIONS( -DFEATURE_OPTIONAL_MESSAGING_EMAIL )
+ENDIF(ENABLE_OPTIONAL_MESSAGING_EMAIL)
+
+IF(ENABLE_OPTIONAL_NBS)
+    MESSAGE(STATUS "Network Bearer Selection API Enabled")
+    ADD_DEFINITIONS( -DFEATURE_OPTIONAL_NBS )
+ENDIF(ENABLE_OPTIONAL_NBS)
+
+IF(ENABLE_OPTIONAL_NFC)
+    MESSAGE(STATUS "NFC API Enabled")
+    ADD_DEFINITIONS( -DFEATURE_OPTIONAL_NFC )
+ENDIF(ENABLE_OPTIONAL_NFC)
+
+IF(ENABLE_OPTIONAL_NFC_EMULATION)
+    MESSAGE(STATUS " NFC Emulation API Enabled")
+    ADD_DEFINITIONS( -DFEATURE_OPTIONAL_NFC_EMULATION )
+ENDIF(ENABLE_OPTIONAL_NFC_EMULATION)
+
+IF(ENABLE_OPTIONAL_NOTIFICATION)
+    MESSAGE(STATUS " Notification API Enabled")
+    ADD_DEFINITIONS( -DFEATURE_OPTIONAL_NOTIFICATION )
+ENDIF(ENABLE_OPTIONAL_NOTIFICATION)
+
+IF(ENABLE_OPTIONAL_POWER)
+    MESSAGE(STATUS " Power API Enabled")
+    ADD_DEFINITIONS( -DFEATURE_OPTIONAL_POWER )
+ENDIF(ENABLE_OPTIONAL_POWER)
+
+IF(ENABLE_OPTIONAL_PUSH)
+    MESSAGE(STATUS "Push API Enabled")
+    ADD_DEFINITIONS( -DFEATURE_OPTIONAL_PUSH )
+ENDIF(ENABLE_OPTIONAL_PUSH)
+
+IF(ENABLE_OPTIONAL_SE)
+    MESSAGE(STATUS "Secure Element API Enabled")
+    ADD_DEFINITIONS( -DFEATURE_OPTIONAL_SE )
+ENDIF(ENABLE_OPTIONAL_SE)
+
+IF(ENABLE_OPTIONAL_SENSOR)
+    MESSAGE(STATUS " Sensor API Enabled")
+    ADD_DEFINITIONS( -DFEATURE_OPTIONAL_SENSOR )
+ENDIF(ENABLE_OPTIONAL_SENSOR)
+
+IF(ENABLE_OPTIONAL_SOUND)
+    MESSAGE(STATUS " Sound Enabled")
+    ADD_DEFINITIONS( -DFEATURE_OPTIONAL_SOUND )
+ENDIF(ENABLE_OPTIONAL_SOUND)
+
+IF(ENABLE_OPTIONAL_SYSTEM_SETTING)
+    MESSAGE(STATUS " System setting API Enabled")
+    ADD_DEFINITIONS( -DFEATURE_OPTIONAL_SYSTEM_SETTING )
+ENDIF(ENABLE_OPTIONAL_SYSTEM_SETTING)
+
+IF(ENABLE_OPTIONAL_SYSTEM_SETTING_HOME_SCREEN)
+    MESSAGE(STATUS " System setting API Enabled")
+    ADD_DEFINITIONS( -DFEATURE_OPTIONAL_SYSTEM_SETTING_HOME_SCREEN )
+ENDIF(ENABLE_OPTIONAL_SYSTEM_SETTING_HOME_SCREEN)
+
+IF(ENABLE_OPTIONAL_SYSTEM_SETTING_LOCK_SCREEN)
+    MESSAGE(STATUS " System setting API Enabled")
+    ADD_DEFINITIONS( -DFEATURE_OPTIONAL_SYSTEM_SETTING_LOCK_SCREEN )
+ENDIF(ENABLE_OPTIONAL_SYSTEM_SETTING_LOCK_SCREEN)
+
+IF(ENABLE_OPTIONAL_SYSTEM_SETTING_INCOMING_CALL)
+    MESSAGE(STATUS " System setting API Enabled")
+    ADD_DEFINITIONS( -DFEATURE_OPTIONAL_SYSTEM_SETTING_INCOMING_CALL )
+ENDIF(ENABLE_OPTIONAL_SYSTEM_SETTING_INCOMING_CALL)
+
+IF(ENABLE_OPTIONAL_SYSTEM_SETTING_EMAIL_SCREEN)
+    MESSAGE(STATUS " System setting API Enabled")
+    ADD_DEFINITIONS( -DFEATURE_OPTIONAL_SYSTEM_SETTING_EMAIL_SCREEN )
+ENDIF(ENABLE_OPTIONAL_SYSTEM_SETTING_EMAIL_SCREEN)
+
+IF(ENABLE_OPTIONAL_TELEPHONY)
+    MESSAGE(STATUS " Telephony related API Enabled")
+    ADD_DEFINITIONS( -DFEATURE_OPTIONAL_TELEPHONY )
+ENDIF(ENABLE_OPTIONAL_TELEPHONY)
+
+IF(ENABLE_OPTIONAL_WEB_SETTING)
+    MESSAGE(STATUS " Web setting API Enabled")
+    ADD_DEFINITIONS( -DFEATURE_OPTIONAL_WEB_SETTING )
+ENDIF(ENABLE_OPTIONAL_WEB_SETTING)
+
+IF(ENABLE_OPTIONAL_WI_FI)
+    MESSAGE(STATUS " Wi-Fi Enabled")
+    ADD_DEFINITIONS( -DFEATURE_OPTIONAL_WI_FI )
+ENDIF(ENABLE_OPTIONAL_WI_FI)
+
+IF(ENABLE_IMPL_BACKWARD_COMPATIBLE)
+    MESSAGE(STATUS " Implementation backward compatibility supported.")
+    ADD_DEFINITIONS( -DIMPL_BACKWARD_COMPATIBLE )
+ENDIF(ENABLE_IMPL_BACKWARD_COMPATIBLE)
+
+# -----------------------------------------------------------------------------
+# CFlags
+# -----------------------------------------------------------------------------
+SET(OPTIMIZATION_FLAGS         "-falign-functions -falign-jumps -falign-loops -falign-labels -freorder-blocks -ftree-vect-loop-version ")
+SET(GC_SECTIONS_FLAGS          "-fdata-sections -ffunction-sections -Wl,--gc-sections")
+SET(CMAKE_C_FLAGS_PROFILING    "-O0 -g -pg")
+SET(CMAKE_CXX_FLAGS_PROFILING  "-O0 -std=c++0x -g -pg")
+SET(CMAKE_C_FLAGS_DEBUG        "-O0 -g")
+SET(CMAKE_CXX_FLAGS_DEBUG      "-O0 -std=c++0x -g")
+SET(CMAKE_C_FLAGS_RELEASE      "-Os -g ${OPTIMIZATION_FLAGS} ${GC_SECTIONS_FLAGS}")
+SET(CMAKE_CXX_FLAGS_RELEASE    "-Os -std=c++0x -g ${OPTIMIZATION_FLAGS} ${GC_SECTIONS_FLAGS}")
+ADD_DEFINITIONS("-DCLIENT_IPC_THREAD")
+ADD_DEFINITIONS("-DEXPORT_API=")
+ADD_DEFINITIONS("-Wall")
+ADD_DEFINITIONS("-D_FILE_OFFSET_BITS=64")
+#ADD_DEFINITIONS("-Werror")
+#ADD_DEFINITIONS("-Wextra")
+
+# -----------------------------------------------------------------------------
+# License file
+# -----------------------------------------------------------------------------
+SET(LICENSE_FILE ${CMAKE_CURRENT_SOURCE_DIR}/LICENSE)
+SET(LICENSE_FILE_DST_PATH /usr/share/license)
+SET(LICENSE_FILE_DST_NAME wrt-plugins-tizen)
+
+INSTALL(
+  FILES ${LICENSE_FILE}
+  DESTINATION ${LICENSE_FILE_DST_PATH}
+  RENAME ${LICENSE_FILE_DST_NAME}
+)
+
+# -----------------------------------------------------------------------------
+# Schema of plugin's configuration file
+# -----------------------------------------------------------------------------
+SET(COMMON_CONFIG_DTD ${CMAKE_CURRENT_SOURCE_DIR}/config.dtd)
+SET(COMMON_CONFIG_DTD_DST /usr/etc/tizen-apis)
+INSTALL(FILES ${COMMON_CONFIG_DTD} DESTINATION ${COMMON_CONFIG_DTD_DST})
+
+# -----------------------------------------------------------------------------
+# Global variables
+# -----------------------------------------------------------------------------
+
+SET(DESTINATION_LIB_PREFIX lib/wrt-plugins)
+
+SET(DESTINATION_HEADER_PREFIX include/${PROJECT_NAME})
+
+SET(TOP ${CMAKE_SOURCE_DIR}/src)
+
+SET(INCLUDE_COMMON ${TOP}/Common ${TOP}/Common/TimeTracer)
+
+SET(LIBS_COMMON
+    ${dpl_LDFLAGS}
+    ${dpl-event_LDFLAGS}
+    ${webkit2_LDFLAGS}
+    ${wrt-deviceapis-commons_LDFLAGS}
+    ${wrt-deviceapis-commons-javascript_LDFLAGS}
+)
+
+SET(CMAKE_INSTALL_RPATH ${wrt-deviceapis-commons_LIBRARY_DIRS})
+
+SET(LIBS_WIDGETDB ${wrt-plugins-widgetdb_LIBRARIES})
+
+# -----------------------------------------------------------------------------
+# Macros for pkgconfig
+# -----------------------------------------------------------------------------
+SET(PKGCONFIG_DIR ${CMAKE_SOURCE_DIR}/pkgconfigs)
+
+MACRO(configure_and_install_pkg PKG_FILE)
+    CONFIGURE_FILE(${PKGCONFIG_DIR}/${PKG_FILE}.in
+               ${PKGCONFIG_DIR}/${PKG_FILE} @ONLY)
+    INSTALL(FILES ${PKGCONFIG_DIR}/${PKG_FILE} DESTINATION lib/pkgconfig)
+ENDMACRO(configure_and_install_pkg)
+
+# -----------------------------------------------------------------------------
+# Functions used for plugins
+# -----------------------------------------------------------------------------
+
+FUNCTION(set_target NAME)
+  STRING(TOLOWER ${NAME} LOWER_NAME)
+  SET(${LOWER_NAME}_dest tizen-${LOWER_NAME} PARENT_SCOPE)
+  SET(${LOWER_NAME}_target wrt-plugins-tizen-${LOWER_NAME} PARENT_SCOPE)
+  SET(${LOWER_NAME}_impl wrt-plugins-tizen-${LOWER_NAME}-impl PARENT_SCOPE)
+  SET(${LOWER_NAME}_config wrt-plugins-tizen-${LOWER_NAME}-config PARENT_SCOPE)
+  SET(${LOWER_NAME}_include ${TOP}/${NAME} PARENT_SCOPE)
+  configure_and_install_pkg(wrt-plugins-tizen-${LOWER_NAME}.pc)
+ENDFUNCTION()
+
+FUNCTION(add_subdir NAME)
+  MESSAGE(STATUS "Building: ${CMAKE_CURRENT_SOURCE_DIR}/${NAME}")
+  ADD_SUBDIRECTORY(${NAME})
+ENDFUNCTION()
+
+FUNCTION(add_plugin)
+  FOREACH(VALUE ${ARGN})
+    set_target(${VALUE})
+  ENDFOREACH(VALUE)
+  FOREACH(VALUE ${ARGN})
+    add_subdir(${VALUE})
+  ENDFOREACH(VALUE)
+ENDFUNCTION()
+
+ADD_SUBDIRECTORY(src)

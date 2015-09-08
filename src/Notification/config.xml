@@ -1,0 +1,21 @@
+<?xml version="1.0" ?>
+<!DOCTYPE plugin-properties SYSTEM "/usr/etc/tizen-apis/config.dtd">
+<plugin-properties>
+    <library-name>libwrt-plugins-tizen-notification.so</library-name>
+    <feature-install-uri>notification.install.uri</feature-install-uri>
+
+    <api-feature>
+        <name>http://tizen.org/privilege/notification</name>
+        <device-capability>notification</device-capability>
+    </api-feature>
+
+    <api-feature>
+        <name>http://tizen.org/privilege/notification.read</name>
+    </api-feature>
+
+    <api-feature>
+        <name>http://tizen.org/privilege/notification.write</name>
+        <device-capability>notification</device-capability>
+    </api-feature>
+
+</plugin-properties>

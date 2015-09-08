@@ -1,0 +1,32 @@
+<?xml version="1.0" ?>
+<!DOCTYPE plugin-properties SYSTEM "/usr/etc/tizen-apis/config.dtd">
+<plugin-properties>
+    <library-name>libwrt-plugins-tizen-nfc.so</library-name>
+    <feature-install-uri>nfc.install.uri</feature-install-uri>
+
+    <api-feature>
+        <name>http://tizen.org/privilege/nfc.common</name>
+        <device-capability>nfc.common</device-capability>
+    </api-feature>
+
+    <api-feature>
+        <name>http://tizen.org/privilege/nfc.tag</name>
+        <device-capability>nfc.tag</device-capability>
+    </api-feature>
+
+    <api-feature>
+        <name>http://tizen.org/privilege/nfc.p2p</name>
+        <device-capability>nfc.p2p</device-capability>
+    </api-feature>
+
+    <api-feature>
+        <name>http://tizen.org/privilege/nfc.admin</name>
+        <device-capability>nfc.admin</device-capability>
+    </api-feature>
+
+    <api-feature>
+        <name>http://tizen.org/privilege/nfc.cardemulation</name>
+        <device-capability>nfc.cardemulation</device-capability>
+    </api-feature>
+
+</plugin-properties>

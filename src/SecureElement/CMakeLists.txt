@@ -1,0 +1,58 @@
+SET(TARGET_NAME ${secureelement_target})
+SET(DESTINATION_NAME ${secureelement_dest})
+SET(TARGET_IMPL_NAME ${secureelement_impl})
+
+IF(ENABLE_OPTIONAL_SE)
+PKG_CHECK_MODULES(platform_pkgs_secureelement REQUIRED smartcard-service smartcard-service-common)
+
+ADD_DEFINITIONS("-fvisibility=hidden")
+
+INCLUDE_DIRECTORIES(
+    ${INCLUDE_COMMON}
+    ${platform_pkgs_secureelement_INCLUDE_DIRS}
+)
+
+SET(CMAKE_INSTALL_RPATH
+    ${CMAKE_INSTALL_RPATH}
+    ${CMAKE_INSTALL_PREFIX}/${DESTINATION_LIB_PREFIX}/${DESTINATION_NAME}
+)
+
+SET(SRCS_IMPL
+    JSSEService.cpp
+    JSReader.cpp
+    JSSession.cpp
+    JSChannel.cpp
+    Session.cpp
+    SEChannel.cpp
+    SEReader.cpp
+    SEService.cpp
+    SECallbackData.cpp
+    SEChangeListener.cpp
+    SEUtils.cpp
+)
+
+ADD_LIBRARY(${TARGET_IMPL_NAME} SHARED ${SRCS_IMPL})
+
+TARGET_LINK_LIBRARIES(${TARGET_IMPL_NAME}
+    ${LIBS_COMMON}
+    ${platform_pkgs_secureelement_LIBRARIES}
+)
+
+SET(SRCS
+    plugin_initializer.cpp
+    plugin_config.cpp
+)
+
+ADD_LIBRARY(${TARGET_NAME} SHARED ${SRCS})
+
+TARGET_LINK_LIBRARIES(${TARGET_NAME}
+    ${TARGET_IMPL_NAME}
+)
+
+INSTALL(TARGETS ${TARGET_NAME} ${TARGET_IMPL_NAME} LIBRARY DESTINATION ${DESTINATION_LIB_PREFIX}/${DESTINATION_NAME})
+INSTALL(FILES ${CMAKE_CURRENT_SOURCE_DIR}/config.xml DESTINATION ${DESTINATION_LIB_PREFIX}/${DESTINATION_NAME})
+ENDIF(ENABLE_OPTIONAL_SE)
+INSTALL(
+    DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/ DESTINATION ${DESTINATION_HEADER_PREFIX}/secureelement
+    FILES_MATCHING PATTERN "*.h" PATTERN "CMakeFiles" EXCLUDE
+)

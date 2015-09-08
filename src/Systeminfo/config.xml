@@ -1,0 +1,18 @@
+<?xml version="1.0" ?>
+<!DOCTYPE plugin-properties SYSTEM "/usr/etc/tizen-apis/config.dtd">
+<plugin-properties>
+    <library-name>libwrt-plugins-tizen-systeminfo.so</library-name>
+    <feature-install-uri>systeminfo.install.uri</feature-install-uri>
+    <api-feature>
+        <name>http://tizen.org/privilege/system</name>
+        <device-capability>system.info</device-capability>
+    </api-feature>
+    <api-feature>
+        <name>http://tizen.org/privilege/telephony</name>
+        <device-capability>telephony</device-capability>
+    </api-feature>
+    <api-feature>
+        <name>http://tizen.org/privilege/systemmanager</name>
+        <device-capability>systemmanager</device-capability>
+    </api-feature>
+</plugin-properties>
