@@ -1,6 +1,6 @@
 Name:       wrt-plugins-tizen
 Summary:    JavaScript plugins for WebRuntime
-Version:    0.5.67
+Version:    0.5.68
 Release:    0
 Group:      Development/Libraries
 License:    Apache-2.0
@@ -115,7 +115,7 @@ Source0:    %{name}-%{version}.tar.gz
 %define    tizen_feature_power_support    1
 
 # Push API is optional in Tizen Wearable Profile.
-%define    tizen_feature_push_support    0
+%define    tizen_feature_push_support   1
 
 # Sensor API is optional in Tizen Wearable Profile.
 %define    tizen_feature_sensor_support    1
