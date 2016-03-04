@@ -96,12 +96,12 @@ BluetoothLEDevice::BluetoothLEDevice(
         LOGE("Failed to get service data list from scan response: %d", ret);
         int inRet = bt_adapter_le_get_scan_result_service_data_list(deviceInfo,
             BT_ADAPTER_LE_PACKET_ADVERTISING , &serviceDataList, &serviceDataListCount);
-            if (inRet != BT_ERROR_NONE) {
-                LOGE("Failed to get service data list from advertise data: %d", ret);
-            }
-            else {
-                assignServiceDataList(serviceDataList, serviceDataListCount);
-            }
+        if (inRet != BT_ERROR_NONE) {
+            LOGE("Failed to get service data list from advertise data: %d", ret);
+        }
+        else {
+            assignServiceDataList(serviceDataList, serviceDataListCount);
+        }
     }
     else {
         assignServiceDataList(serviceDataList, serviceDataListCount);
@@ -204,10 +204,21 @@ void BluetoothLEDevice::assignServicesolicitationUUIDS(char** service_solicitati
 void BluetoothLEDevice::assignServiceDataList(bt_adapter_le_service_data_s *serviceDataList,
 int serviceDataListCount) {
 
-    m_servicesList = std::vector< std::pair<std::string, std::string>>();
+    m_servicesList = std::vector<std::pair<std::string, std::string>>();
     for( int i = 0; i < serviceDataListCount; ++i){
-        m_servicesList->push_back(std::make_pair(std::string(serviceDataList[i].service_uuid, 4),
-            std::string(serviceDataList[i].service_data, serviceDataList[i].service_data_len)));
+        LOGD("serviceDataList : serviceuuid %s, servicedata %2x, servicedatalen %d ",  serviceDataList[i].service_uuid, serviceDataList[i].service_data, serviceDataList[i].service_data_len);
+        std::string service_data_str;
+        int service_data_str_index = 0;
+        std::vector<unsigned char> service_data(serviceDataList[i].service_data, serviceDataList[i].service_data + serviceDataList[i].service_data_len);
+        for (int k = 0; k<service_data.size(); k++) {
+            int chartoint;
+            chartoint = service_data[k] - '0' + 48;
+            service_data_str[service_data_str_index++] = "0123456789abcdef"[chartoint / 16];
+            service_data_str[service_data_str_index++] = "0123456789abcdef"[chartoint % 16];
+        }
+        LOGD("service_data_str : %s", service_data_str.c_str());
+        m_servicesList->push_back(std::make_pair(std::string(serviceDataList[i].service_uuid, 4), service_data_str));
+        service_data_str.clear();
     }
 
     if( serviceDataListCount > 0 ) {
@@ -215,8 +226,9 @@ int serviceDataListCount) {
         if( ret !=  BT_ERROR_NONE ) {
             LOGW("Failed to free service data list: %d", ret);
         }
+    } else {
+        g_free(serviceDataList);
     }
-    g_free(serviceDataList);
 }
 
 std::string BluetoothLEDevice::getAddress() const
@@ -300,7 +312,17 @@ JSValueRef BluetoothLEDevice::getServiceData(JSContextRef ctx) const {
             Common::JSUtil::toJSValueRef(ctx, it->second), kJSPropertyAttributeNone, NULL);
         servicesDatas.push_back(jsservice);
     }
-    return Common::JSUtil::toJSValueRef_<JSObjectRef>(ctx, servicesDatas);
+
+    int size = servicesDatas.size();
+    JSValueRef exception = NULL;
+    JSObjectRef js_result;
+    js_result = JSObjectMakeArray(ctx, size, size > 0 ? &servicesDatas[0] : NULL, &exception);
+    if (NULL == js_result || NULL != exception) {
+        LOGE("Could not create a result array.");
+        throw UnknownException(ctx, exception);
+    }
+
+    return js_result;
 }
 
 } // Bluetooth
