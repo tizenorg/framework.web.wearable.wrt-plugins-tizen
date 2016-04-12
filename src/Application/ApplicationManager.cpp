@@ -573,7 +573,7 @@ namespace {
 }
 
 ApplicationManager::ApplicationManager() :
-    m_initialized(false)
+    m_initialized(false), m_gid(0)
 {
     LOGD("Entered");
 }
@@ -604,6 +604,9 @@ ApplicationManager::~ApplicationManager()
 
     // unset context event callback which is registered by kill().
     app_manager_unset_app_context_event_cb();
+    if (m_gid){
+        g_source_remove(m_gid);
+    }
 }
 
 void ApplicationManager::launch(const EventApplicationLaunchPtr& event)
@@ -1300,8 +1303,10 @@ typedef struct {
 gboolean check_terminate_callback (gpointer user_data)
 {
     LOGD("Entered");
+
     //EventApplicationKillPtr event = (EventApplicationKillPtr)data;
     KILL_DATA_T* data = (KILL_DATA_T*)user_data;
+    ApplicationManager* handler = static_cast<ApplicationManager*>(data->appManager);
 
     char * appId = NULL;
     int ret = app_manager_get_app_id(data->pid, &appId);
@@ -1314,7 +1319,8 @@ gboolean check_terminate_callback (gpointer user_data)
     }
     auto_free_char_ptr ptr(&appId, char_ptr_deleter);
 
-    data->appManager->invokeManualAnswerKill(data->pid);
+    handler->invokeManualAnswerKill(data->pid);
+    handler->m_gid = 0;
     free(appId);
 
     return false;
@@ -1410,7 +1416,7 @@ void ApplicationManager::OnRequestReceived(const EventApplicationKillPtr& event)
             data->pid = pid;
             data->appManager = this;
             data->event = event;
-            g_timeout_add(3000, check_terminate_callback, (void*)data);
+            m_gid = g_timeout_add(3000, check_terminate_callback, (void*)data);
         }
 
         std::lock_guard<std::mutex> lock(m_killMapLock);

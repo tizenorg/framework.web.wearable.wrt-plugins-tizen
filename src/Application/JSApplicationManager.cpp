@@ -290,7 +290,7 @@ JSValueRef JSApplicationManager::kill(JSContextRef context,
         ArgumentValidator validator(context, argumentCount, arguments);
 
         // contextId
-       std::string contextId = validator.toString(0);
+        std::string contextId = validator.toString(0);
         event->setContextId(contextId);
 
         // successCallback

@@ -1,6 +1,6 @@
 Name:       wrt-plugins-tizen
 Summary:    JavaScript plugins for WebRuntime
-Version:    0.5.69
+Version:    0.5.70
 Release:    0
 Group:      Development/Libraries
 License:    Apache-2.0

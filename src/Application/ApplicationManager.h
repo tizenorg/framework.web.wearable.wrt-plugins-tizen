@@ -75,6 +75,7 @@ public:
     static ApplicationCertArrayPtr getAppCerts(const std::string id);
     static std::string getAppSharedURI(const std::string appId);
     static ApplicationMetaDataArrayPtr getAppMetaData(const std::string id);
+    guint m_gid;
 
 protected:
     virtual void OnRequestReceived(const EventApplicationLaunchPtr& event);
@@ -105,8 +106,7 @@ private:
     typedef std::map<long, EventApplicationAppInfoEventListenerEmitter::IdType> WatchIdMap;
 
     EventApplicationAppInfoEventListenerEmitters m_installedApplicationsEmitters;
-    WatchIdMap      m_watchIdMap;
-
+    WatchIdMap m_watchIdMap;
 };
 
 class LaunchAppControlPendingEvent
